@@ -1,30 +1,38 @@
-const fs = require('fs')
-const path = require("node:path");
+import { minify } from 'minify';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
-const srcDir = './src/'
-const distDir = './dist/'
+const srcDir = './src';
+const distDir = './dist';
 
-fs.readdir(srcDir, (err, files) => {
-    files.forEach(file => {
+async function build() {
+    await fs.mkdir(distDir, { recursive: true });
 
-        const extension = path.extname(file)
-        console.log(extension)
-        const filePath = `${srcDir}/${file}`
-        const distPath = `${distDir}/${file.replace(extension, '.min'+extension)}`
+    const files = await fs.readdir(srcDir);
 
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                console.log(err)
-            } else {
-                fs.writeFile(distPath, data, err => {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        console.log(data)
-                    }
-                })
-            }
-        })
+    for (const file of files) {
+        const extension = path.extname(file);
 
-    })
-})
+        if (extension !== '.js' && extension !== '.css') {
+            continue;
+        }
+
+        const filePath = path.join(srcDir, file);
+        const distPath = path.join(
+            distDir,
+            file.replace(extension, `.min${extension}`)
+        );
+
+        try {
+            const minifyData = await minify(filePath);
+
+            await fs.writeFile(distPath, minifyData, 'utf8');
+
+            console.log(`Minifié : ${file} -> ${path.basename(distPath)}`);
+        } catch (err) {
+            console.error(`Erreur avec ${file}:`, err.message);
+        }
+    }
+}
+
+build();
