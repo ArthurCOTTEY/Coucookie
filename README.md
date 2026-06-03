@@ -14,7 +14,6 @@ No package manager. No heavy dependency. Just grab the source code, plug it into
 | File | Original | Minified | Reduction |
 |---|---:|---:|---:|
 | coucookie.css | 5.91 KB | 4.11 KB | 30.47% |
-| coucookie.js | 16.88 KB | 13.73 KB | 18.70% |
 <!-- MINIFY-STATS:END -->
 
 ## ✨ Why Coucookie?
