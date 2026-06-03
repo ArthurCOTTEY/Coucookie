@@ -56,8 +56,8 @@ async function minifyJs(filePath) {
     const result = await terserMinify(code, {
         compress: true,
 
-        // Important :
-        // On évite le renommage agressif pour ne pas casser les fonctions exposées sur window
+        // Important:
+        // We avoid aggressive mangling to prevent breaking functions exposed on window
         mangle: false,
 
         format: {
@@ -66,7 +66,7 @@ async function minifyJs(filePath) {
     });
 
     if (!result.code) {
-        throw new Error('Terser n’a pas retourné de code minifié.');
+        throw new Error('Terser did not return any minified code.');
     }
 
     return result.code;
@@ -122,15 +122,15 @@ async function build() {
                 reduction: getReductionPercent(originalStats.size, minifiedStats.size)
             });
 
-            console.log(`Minifié : ${file} -> ${path.basename(distPath)}`);
+            console.log(`Minified: ${file} -> ${path.basename(distPath)}`);
         } catch (err) {
-            console.error(`Erreur avec ${file}:`, err.message);
+            console.error(`Error with ${file}:`, err.message);
         }
     }
 
     await updateReadme(results);
 
-    console.log('README.md mis à jour.');
+    console.log('README.md updated.');
 }
 
 build();
