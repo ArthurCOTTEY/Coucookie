@@ -17,8 +17,8 @@ const cookieServiceLibrary = {
         description: 'Gestion des balises, mesure d’audience et suivi statistique.',
         learnMore: 'https://policies.google.com/privacy',
         icon: `<svg width="14" height="14" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><g><polygon fill="#8AB4F8" points="150.261818 245.516364 105.825455 202.185455 201.258182 104.730909 247.265455 149.821818"></polygon><path d="M150.450909,53.9381818 L106.174545,8.73090909 L9.36,104.629091 C-3.12,117.109091 -3.12,137.341818 9.36,149.836364 L104.72,245.821818 L149.810909,203.64 L77.1563636,127.232727 L150.450909,53.9381818 Z" fill="#4285F4"></path><path d="M246.625455,105.370909 L150.625455,9.37090909 C138.130909,-3.12363636 117.869091,-3.12363636 105.374545,9.37090909 C92.88,21.8654545 92.88,42.1272727 105.374545,54.6218182 L201.374545,150.621818 C213.869091,163.116364 234.130909,163.116364 246.625455,150.621818 C259.12,138.127273 259.12,117.865455 246.625455,105.370909 Z" fill="#8AB4F8"></path><circle fill="#246FDB" cx="127.265455" cy="224.730909" r="31.2727273"></circle></g></svg>`,
-        load: () => {
-            console.log('Google Analytics actif via Consent Mode V2');
+        load: ({ key }) => {
+            loadGoogleScript({ key });
         }
     },
 
@@ -59,8 +59,95 @@ const cookieServiceLibrary = {
     }
 };
 
-const getActiveCookieServices = () =>
-    Array.isArray(window.activeCookieServices) ? window.activeCookieServices : [];
+const coucookieDefaultConsent = {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    security_storage: 'granted',
+    wait_for_update: 500
+};
+
+const getCoucookieConfig = () => window.coucookieConfig || {};
+
+const isGoogleAdvancedConsentMode = () =>
+    getCoucookieConfig().googleConsentMode === 'advanced';
+
+const getGoogleServiceConfig = () =>
+    getActiveCookieServices().find(({ service }) => service === 'googleAnalytics');
+
+const loadGoogleScript = ({ key }) => {
+    if (!key || $('#coucookie-google-script')) return;
+
+    initGoogleConsentMode();
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.id = 'coucookie-google-script';
+
+    if (key.startsWith('GTM-')) {
+        window.dataLayer.push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+        });
+
+        script.src = `https://www.googletagmanager.com/gtm.js?id=${key}`;
+    } else {
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${key}`;
+
+        script.onload = () => {
+            window.gtag('js', new Date());
+
+            window.gtag('config', key, {
+                anonymize_ip: true
+            });
+        };
+    }
+
+    document.head.appendChild(script);
+
+    console.log('Google chargé via Coucookie', key);
+};
+
+const initGoogleConsentMode = () => {
+    window.dataLayer = window.dataLayer || [];
+
+    window.gtag = window.gtag || function () {
+        window.dataLayer.push(arguments);
+    };
+
+    window.gtag('consent', 'default', coucookieDefaultConsent);
+};
+
+const normalizeCookieService = (service, config) => {
+    if (typeof config === 'string') {
+        return {
+            service,
+            key: config
+        };
+    }
+
+    return {
+        service,
+        ...(config || {})
+    };
+};
+
+const getActiveCookieServices = () => {
+    if (window.coucookieConfig?.services) {
+        return Object.entries(window.coucookieConfig.services)
+            .map(([service, config]) => normalizeCookieService(service, config))
+            .filter(({ service }) => cookieServiceLibrary[service]);
+    }
+
+    // Compatibilité avec l’ancienne syntaxe
+    if (Array.isArray(window.activeCookieServices)) {
+        return window.activeCookieServices;
+    }
+
+    return [];
+};
 
 const getService = service => cookieServiceLibrary[service];
 
@@ -166,7 +253,7 @@ const updateGoogleConsent = preferences => {
     const analyticsGranted = preferences.googleAnalytics === true;
     const adsGranted = preferences.facebookPixel === true;
 
-    if (typeof gtag !== 'function') {
+    if (typeof window.gtag !== 'function') {
         console.warn('gtag non disponible : Google Consent non mis à jour');
         return;
     }
@@ -180,10 +267,10 @@ const updateGoogleConsent = preferences => {
         security_storage: 'granted'
     };
 
-    gtag('consent', 'update', consent);
+    window.gtag('consent', 'update', consent);
 
     if (analyticsGranted) {
-        gtag('event', 'cookie_consent_accepted', {
+        window.gtag('event', 'cookie_consent_accepted', {
             event_category: 'cookie',
             event_label: 'Google Analytics accepted',
             debug_mode: true
@@ -290,6 +377,17 @@ const saveCookiePreferences = () => {
 };
 
 const initCookiePopup = () => {
+
+    const googleServiceConfig = getGoogleServiceConfig();
+
+    if (googleServiceConfig) {
+        initGoogleConsentMode();
+
+        if (isGoogleAdvancedConsentMode()) {
+            loadGoogleScript(googleServiceConfig);
+        }
+    }
+
     createCookiePopup();
     generateCookieServices();
 
