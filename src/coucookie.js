@@ -14,7 +14,7 @@ const cookiePopupSvg = `
 const cookieServiceLibrary = {
     googleAnalytics: {
         name: 'Google Tag Manager',
-        description: 'Gestion des balises, mesure d’audience et suivi statistique.',
+        description: 'Mesure d’audience, suivi des conversions publicitaires et amélioration de nos campagnes marketing',
         learnMore: 'https://policies.google.com/privacy',
         icon: `<svg width="14" height="14" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><g><polygon fill="#8AB4F8" points="150.261818 245.516364 105.825455 202.185455 201.258182 104.730909 247.265455 149.821818"></polygon><path d="M150.450909,53.9381818 L106.174545,8.73090909 L9.36,104.629091 C-3.12,117.109091 -3.12,137.341818 9.36,149.836364 L104.72,245.821818 L149.810909,203.64 L77.1563636,127.232727 L150.450909,53.9381818 Z" fill="#4285F4"></path><path d="M246.625455,105.370909 L150.625455,9.37090909 C138.130909,-3.12363636 117.869091,-3.12363636 105.374545,9.37090909 C92.88,21.8654545 92.88,42.1272727 105.374545,54.6218182 L201.374545,150.621818 C213.869091,163.116364 234.130909,163.116364 246.625455,150.621818 C259.12,138.127273 259.12,117.865455 246.625455,105.370909 Z" fill="#8AB4F8"></path><circle fill="#246FDB" cx="127.265455" cy="224.730909" r="31.2727273"></circle></g></svg>`,
         load: ({ key }) => {
@@ -260,9 +260,9 @@ const updateGoogleConsent = preferences => {
 
     const consent = {
         analytics_storage: analyticsGranted ? 'granted' : 'denied',
-        ad_storage: adsGranted ? 'granted' : 'denied',
-        ad_user_data: adsGranted ? 'granted' : 'denied',
-        ad_personalization: adsGranted ? 'granted' : 'denied',
+        ad_storage: analyticsGranted ? 'granted' : 'denied',
+        ad_user_data: analyticsGranted ? 'granted' : 'denied',
+        ad_personalization: analyticsGranted ? 'granted' : 'denied',
         functionality_storage: 'granted',
         security_storage: 'granted'
     };
