@@ -1,0 +1,35 @@
+{
+  "name": "coucookie",
+  "version": "1.0.0",
+  "description": "Coucookie is a lightweight, source-based cookie consent manager for websites. No npm, no build step, no heavy dependency — just copy the source code, plug it into your project, and manage cookie consent with a simple, customizable, privacy-first banner.",
+  "homepage": "https://github.com/ArthurCOTTEY/Coucookie#readme",
+  "bugs": {
+    "url": "https://github.com/ArthurCOTTEY/Coucookie/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArthurCOTTEY/Coucookie.git"
+  },
+  "license": "MIT",
+  "author": "Arthur COTTEY",
+  "type": "module",
+  "main": "src/coucookie.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "keywords": [
+    "cookie",
+    "cookies",
+    "cookie-consent",
+    "consent",
+    "privacy",
+    "gdpr",
+    "banner",
+    "javascript"
+  ],
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.48.0"
+  }
+}
