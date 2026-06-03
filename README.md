@@ -537,6 +537,126 @@ window.coucookieConfig = {
     }
 };
 ```
+## 🏗️ Build minified files with Node.js
+
+Coucookie keeps readable source files in `/src` and production-ready minified files in `/dist`.
+
+Project structure:
+
+```txt id="wgyto0"
+coucookie/
+├── src/
+│   ├── coucookie.js
+│   └── coucookie.css
+├── dist/
+│   ├── coucookie.min.js
+│   └── coucookie.min.css
+├── package.json
+├── package-lock.json
+└── README.md
+```
+
+If you modify the source files in `/src`, you can rebuild the minified files in `/dist` with Node.js.
+
+### Install dependencies
+
+After cloning the project, install the Node dependencies:
+
+```bash id="3ykz6e"
+npm install
+```
+
+### Build minified files
+
+Run the build command:
+
+```bash id="vwhmfy"
+npm run build
+```
+
+This command generates or updates:
+
+```txt id="mg6t99"
+dist/coucookie.min.js
+dist/coucookie.min.css
+```
+
+from:
+
+```txt id="tf87vc"
+src/coucookie.js
+src/coucookie.css
+```
+
+It can also update the build size table in the README if the build script is configured to do so.
+
+### Recommended workflow
+
+When you want to modify Coucookie:
+
+```bash id="83serl"
+# 1. Edit the readable source files
+src/coucookie.js
+src/coucookie.css
+
+# 2. Build the minified production files
+npm run build
+
+# 3. Commit source files, dist files, and package files
+git add src/coucookie.js src/coucookie.css dist/coucookie.min.js dist/coucookie.min.css README.md package.json package-lock.json
+git commit -m "Update Coucookie build"
+```
+
+### Files to keep in Git
+
+The following files should be committed:
+
+```txt id="n2yjmc"
+src/coucookie.js
+src/coucookie.css
+dist/coucookie.min.js
+dist/coucookie.min.css
+package.json
+package-lock.json
+README.md
+```
+
+The `package.json` file contains the build commands.
+
+The `package-lock.json` file ensures that everyone uses the same dependency versions.
+
+### Files not to commit
+
+Do not commit `node_modules`.
+
+Add it to `.gitignore`:
+
+```gitignore id="cvs3rb"
+node_modules/
+```
+
+After cloning the project, another developer can simply run:
+
+```bash id="49hs2k"
+npm install
+npm run build
+```
+
+### Use source or minified files
+
+During development, you can use the readable source files:
+
+```html id="rg2ivk"
+<link rel="stylesheet" href="./src/coucookie.css">
+<script src="./src/coucookie.js"></script>
+```
+
+In production, use the minified files from `/dist`:
+
+```html id="zo2stx"
+<link rel="stylesheet" href="./dist/coucookie.min.css">
+<script src="./dist/coucookie.min.js"></script>
+```
 
 ## 📦 Features
 
