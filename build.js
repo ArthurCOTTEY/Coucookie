@@ -63,7 +63,7 @@ async function minifyJs(filePath) {
         format: {
             comments: false
         }
-    });
+    });a
 
     if (!result.code) {
         throw new Error('Terser did not return any minified code.');
