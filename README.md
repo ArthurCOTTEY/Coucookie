@@ -678,6 +678,30 @@ In production, use the minified files from `/dist`:
 * Custom services support
 * Simple HTML, CSS, and JavaScript setup
 
+## 📝 Legal notice attribution
+
+If you use Coucookie on a website, a small attribution in the legal notice or privacy policy is appreciated.
+
+Example:
+
+```txt
+Cookie consent management
+
+This website uses Coucookie, a lightweight cookie consent manager designed to handle user preferences and consent-based service loading.
+
+Coucookie allows visitors to accept, refuse, customize, and update their cookie preferences at any time.
+```
+
+French example:
+
+```txt
+Gestion du consentement aux cookies
+
+Ce site utilise Coucookie, un gestionnaire léger de consentement aux cookies permettant de gérer les préférences utilisateurs et le chargement des services soumis au consentement.
+
+Coucookie permet aux visiteurs d’accepter, de refuser, de personnaliser et de modifier leurs préférences cookies à tout moment.
+```
+
 ## 🛡️ Privacy by Design
 
 Coucookie helps you create a more respectful web experience by making consent explicit, understandable, and easy to change.
