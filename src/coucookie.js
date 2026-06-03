@@ -1,5 +1,15 @@
 const $ = (selector, parent = document) => parent.querySelector(selector);
-const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+
+const cookiePopupSvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 417 417">
+        <path d="M345 204a59 59 0 0 1-85-48 60 60 0 0 1-48-85 59 59 0 0 1-24-36q-64 4-111 41a42 42 0 0 1-6 66 42 42 0 0 1-23 6l-17-3a188 188 0 0 0-11 63 189 189 0 0 0 333 122 42 42 0 0 1-10-59q11-16 32-17h3l3-26a59 59 0 0 1-36-24M132 335q-20 0-32-16-9-10-10-27a42 42 0 0 1 74-26q10 11 10 27c0 23-18 42-42 42m28-151q-20 0-32-16-10-11-10-27a42 42 0 0 1 74-26q9 10 10 27c0 23-19 42-42 42m87 131q-26-1-42-20-12-14-13-35a54 54 0 0 1 96-34q13 15 13 35c0 30-24 54-54 54" style="fill:#f5b97d"/>
+        <path d="M160 163a22 22 0 1 0 0-44 22 22 0 0 0 0 44m-28 151a22 22 0 1 0 0-44 22 22 0 0 0 0 44M70 106a22 22 0 0 0-8-16 189 189 0 0 0-23 36l9 2c12 0 22-10 22-22m285 190q0 11 10 18a188 188 0 0 0 20-39l-8-1c-12 0-22 9-22 22m-109-2a34 34 0 1 0 0-68 34 34 0 0 0 0 68" style="fill:#cd916e"/>
+        <path d="M192 115q10 11 10 26a42 42 0 0 1-74 27 42 42 0 1 0 64-53m-18 177a42 42 0 0 1-74 27 42 42 0 1 0 64-53q10 11 10 26m126-32a54 54 0 0 1-95 35 54 54 0 1 0 83-69q12 14 12 34" style="fill:#cd916e"/>
+        <path d="M160 183a42 42 0 1 0 0-84 42 42 0 0 0 0 84m0-64a22 22 0 1 1 0 44 22 22 0 0 1 0-44m-28 215a42 42 0 1 0 0-84 42 42 0 0 0 0 84m0-64a22 22 0 1 1 0 44 22 22 0 0 1 0-44"/>
+        <path d="M417 207v-1a10 10 0 0 0-10-10c-14-1-28-10-34-23a10 10 0 0 0-15-4q-10 6-23 7a40 40 0 0 1-20-5q-20-13-20-39l-2-8-8-2h-4a40 40 0 0 1-33-63 10 10 0 0 0-4-15c-13-6-22-20-23-34a10 10 0 0 0-10-10h-3a209 209 0 1 0 209 207M62 90a22 22 0 0 1 8 16c0 12-10 22-22 22l-9-2a189 189 0 0 1 23-36m303 224q-10-7-10-18a22 22 0 0 1 30-21 188 188 0 0 1-20 39m26-58-13-2h-3a42 42 0 0 0-22 76q-14 17-32 29l-2 2q-47 35-111 36A189 189 0 0 1 26 161l5-16 17 3a42 42 0 0 0 23-6 42 42 0 0 0 6-66l-1-1q51-51 126-55a60 60 0 0 0 24 37 60 60 0 0 0 50 84 60 60 0 0 0 84 50 60 60 0 0 0 37 24 188 188 0 0 1-6 41"/>
+        <path d="M246 314a54 54 0 1 0 0-108 54 54 0 0 0 0 108m0-88a34 34 0 1 1 0 68 34 34 0 0 1 0-68"/>
+    </svg>
+`;
 
 const cookieServiceLibrary = {
     googleAnalytics: {
@@ -27,7 +37,6 @@ const cookieServiceLibrary = {
                 };
 
                 f._fbq ||= n;
-
                 n.push = n;
                 n.loaded = true;
                 n.version = '2.0';
@@ -50,10 +59,49 @@ const cookieServiceLibrary = {
     }
 };
 
+const getActiveCookieServices = () =>
+    Array.isArray(window.activeCookieServices) ? window.activeCookieServices : [];
+
 const getService = service => cookieServiceLibrary[service];
 
+const createCookiePopup = () => {
+    if ($('#cookiePopup')) return;
+
+    document.body.insertAdjacentHTML('beforeend', `
+        <div class="cookie-popup" id="cookiePopup">
+            <div class="cookie-top">
+                <div class="cookie-icon">${cookiePopupSvg}</div>
+
+                <div>
+                    <h3>Gestion des cookies</h3>
+                    <p>
+                        Nous utilisons des cookies afin d'améliorer votre expérience,
+                        mesurer l’audience et personnaliser nos campagnes marketing.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cookie-actions" id="cookieMainActions">
+                <button type="button" class="cookie-accept" onclick="acceptAllCookies()">Accepter</button>
+                <button type="button" class="cookie-refuse" onclick="refuseAllCookies()">Refuser</button>
+                <button type="button" class="cookie-settings-btn" onclick="toggleCookieSettings()">Paramétrer</button>
+            </div>
+
+            <div class="cookie-settings" id="cookieSettings">
+                <div class="tableCookieManage" id="cookieServicesContainer"></div>
+
+                <div class="cookie-actions">
+                    <button type="button" class="cookie-accept" onclick="acceptAllFromSettings()">Tout accepter</button>
+                    <button type="button" class="cookie-refuse" onclick="refuseAllFromSettings()">Tout refuser</button>
+                    <button type="button" class="cookie-save" onclick="saveCookiePreferences()">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+    `);
+};
+
 const getAllPreferences = value =>
-    activeCookieServices.reduce((preferences, { service }) => {
+    getActiveCookieServices().reduce((preferences, { service }) => {
         preferences[service] = value;
         return preferences;
     }, {});
@@ -74,7 +122,7 @@ const generateCookieServices = () => {
     const container = $('#cookieServicesContainer');
     if (!container) return;
 
-    container.innerHTML = activeCookieServices
+    container.innerHTML = getActiveCookieServices()
         .map(({ service }) => {
             const item = getService(service);
             if (!item) return '';
@@ -86,8 +134,8 @@ const generateCookieServices = () => {
             return `
                 <div class="cookie-setting-item checkbox-style">
                     <label class="cookie-checkbox">
-                        <div class="d-inline-flex align-items-baseline">
-                            <div class="cookieIconManage mr-2">${item.icon || ''}</div>
+                        <div class="cookie-service-content">
+                            <div class="cookieIconManage">${item.icon || ''}</div>
 
                             <div class="cookie-label">
                                 <strong>${item.name}</strong>
@@ -99,7 +147,7 @@ const generateCookieServices = () => {
                         </div>
 
                         <input type="checkbox" id="${service}">
-                        <span class="checkmark ml-auto"></span>
+                        <span class="checkmark"></span>
                     </label>
                 </div>
             `;
@@ -108,7 +156,7 @@ const generateCookieServices = () => {
 };
 
 const applyPreferencesToCheckboxes = preferences => {
-    activeCookieServices.forEach(({ service }) => {
+    getActiveCookieServices().forEach(({ service }) => {
         const input = $(`#${service}`);
         if (input) input.checked = !!preferences[service];
     });
@@ -148,7 +196,7 @@ const updateGoogleConsent = preferences => {
 const applyConsent = preferences => {
     updateGoogleConsent(preferences);
 
-    activeCookieServices.forEach(activeService => {
+    getActiveCookieServices().forEach(activeService => {
         if (preferences[activeService.service] !== true) return;
 
         const service = getService(activeService.service);
@@ -190,6 +238,9 @@ const closeCookiePopup = () => {
 };
 
 const reopenCookiePopup = () => {
+    createCookiePopup();
+    generateCookieServices();
+
     const popup = $('#cookiePopup');
     const mainActions = $('#cookieMainActions');
     const settings = $('#cookieSettings');
@@ -205,7 +256,11 @@ const reopenCookiePopup = () => {
     if (settings) settings.style.display = 'block';
 
     if (savedPreferences) {
-        applyPreferencesToCheckboxes(JSON.parse(savedPreferences));
+        try {
+            applyPreferencesToCheckboxes(JSON.parse(savedPreferences));
+        } catch {
+            localStorage.removeItem('cookiePreferences');
+        }
     }
 };
 
@@ -226,7 +281,7 @@ const refuseAllFromSettings = () => {
 };
 
 const saveCookiePreferences = () => {
-    const preferences = activeCookieServices.reduce((result, { service }) => {
+    const preferences = getActiveCookieServices().reduce((result, { service }) => {
         result[service] = $(`#${service}`)?.checked === true;
         return result;
     }, {});
@@ -234,7 +289,8 @@ const saveCookiePreferences = () => {
     savePreferences(preferences);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const initCookiePopup = () => {
+    createCookiePopup();
     generateCookieServices();
 
     const savedPreferences = localStorage.getItem('cookiePreferences');
@@ -247,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         const preferences = JSON.parse(savedPreferences);
 
-        activeCookieServices.forEach(({ service }) => {
+        getActiveCookieServices().forEach(({ service }) => {
             preferences[service] ??= false;
         });
 
@@ -263,4 +319,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setPopupVisible(true);
     }
-});
+};
+
+document.addEventListener('DOMContentLoaded', initCookiePopup);
+
+window.acceptAllCookies = acceptAllCookies;
+window.refuseAllCookies = refuseAllCookies;
+window.toggleCookieSettings = toggleCookieSettings;
+window.acceptAllFromSettings = acceptAllFromSettings;
+window.refuseAllFromSettings = refuseAllFromSettings;
+window.saveCookiePreferences = saveCookiePreferences;
+window.reopenCookiePopup = reopenCookiePopup;
