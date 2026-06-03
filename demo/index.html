@@ -3,9 +3,303 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Demo Coucookie</title>
+    <title>Coucookie - Demo</title>
 
-    <link rel="stylesheet" href="../dist/coucookie.min.css">
+    <link rel="stylesheet" href="../src/coucookie.css">
+
+    <style>
+        :root {
+            --demo-primary: #25bce9;
+            --demo-primary-dark: #1397bd;
+            --demo-bg: #f8fafc;
+            --demo-card: #ffffff;
+            --demo-text: #111827;
+            --demo-muted: #6b7280;
+            --demo-border: #e5e7eb;
+            --demo-code: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: var(--demo-text);
+            background:
+                    radial-gradient(circle at top left, rgba(37, 188, 233, .18), transparent 34%),
+                    linear-gradient(180deg, #ffffff 0%, var(--demo-bg) 100%);
+        }
+
+        .demo-page {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 56px 0;
+        }
+
+        .demo-hero {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 32px;
+            align-items: center;
+            margin-bottom: 42px;
+        }
+
+        .demo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--demo-primary-dark);
+            background: rgba(37, 188, 233, .12);
+            border: 1px solid rgba(37, 188, 233, .22);
+            border-radius: 999px;
+        }
+
+        .demo-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(42px, 6vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+        }
+
+        .demo-hero p {
+            max-width: 640px;
+            margin: 0 0 28px;
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--demo-muted);
+        }
+
+        .demo-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .demo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .demo-btn-primary {
+            color: #fff;
+            background: var(--demo-primary);
+            box-shadow: 0 14px 28px rgba(37, 188, 233, .24);
+        }
+
+        .demo-btn-secondary {
+            color: var(--demo-text);
+            background: #fff;
+            border: 1px solid var(--demo-border);
+        }
+
+        .demo-preview {
+            padding: 24px;
+            background: rgba(255, 255, 255, .72);
+            border: 1px solid rgba(229, 231, 235, .82);
+            border-radius: 28px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, .08);
+            backdrop-filter: blur(12px);
+        }
+
+        .demo-preview-card {
+            padding: 24px;
+            background: #fff;
+            border: 1px solid var(--demo-border);
+            border-radius: 22px;
+        }
+
+        .demo-cookie {
+            width: 86px;
+            height: 86px;
+            margin-bottom: 18px;
+        }
+
+        .demo-preview-card h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .demo-preview-card p {
+            margin: 0 0 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--demo-muted);
+        }
+
+        .demo-mini-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .demo-mini-actions span {
+            flex: 1;
+            height: 38px;
+            border-radius: 999px;
+            background: #eef2f7;
+        }
+
+        .demo-mini-actions span:first-child {
+            background: var(--demo-primary);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 42px;
+        }
+
+        .demo-stat,
+        .demo-section {
+            background: var(--demo-card);
+            border: 1px solid var(--demo-border);
+            border-radius: 22px;
+            box-shadow: 0 12px 40px rgba(15, 23, 42, .04);
+        }
+
+        .demo-stat {
+            padding: 22px;
+        }
+
+        .demo-stat strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 28px;
+        }
+
+        .demo-stat span {
+            color: var(--demo-muted);
+            font-size: 14px;
+        }
+
+        .demo-section {
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .demo-section h2 {
+            margin: 0 0 16px;
+            font-size: 28px;
+            letter-spacing: -1px;
+        }
+
+        .demo-section h3 {
+            margin: 24px 0 12px;
+            font-size: 20px;
+        }
+
+        .demo-section p {
+            margin: 0 0 14px;
+            line-height: 1.7;
+            color: var(--demo-muted);
+        }
+
+        .demo-list {
+            display: grid;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .demo-list li {
+            position: relative;
+            padding-left: 28px;
+            line-height: 1.6;
+            color: var(--demo-muted);
+        }
+
+        .demo-list li::before {
+            content: "🍪";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .demo-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--demo-border);
+            border-radius: 16px;
+        }
+
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+        }
+
+        .demo-table th,
+        .demo-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--demo-border);
+        }
+
+        .demo-table th {
+            font-size: 13px;
+            color: var(--demo-muted);
+            background: #f9fafb;
+        }
+
+        .demo-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .demo-code {
+            overflow-x: auto;
+            padding: 18px;
+            color: #e5e7eb;
+            background: var(--demo-code);
+            border-radius: 16px;
+        }
+
+        .demo-code code {
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .demo-footer {
+            padding: 24px 0 0;
+            text-align: center;
+            color: var(--demo-muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 860px) {
+            .demo-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-page {
+                padding-top: 32px;
+            }
+        }
+    </style>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -38,17 +332,230 @@
 </head>
 <body>
 
-<h1>Demo Coucookie</h1>
+<main class="demo-page">
+    <section class="demo-hero">
+        <div>
+            <div class="demo-badge">
+                🍪 Cookie consent manager
+            </div>
 
-<p>
-    Cette page sert à tester le bandeau de cookies.
-</p>
+            <h1>Coucookie</h1>
 
-<button type="button" onclick="reopenCookiePopup()">
-    Gérer mes cookies
-</button>
+            <p>
+                A lightweight, source-based cookie consent manager designed to help websites handle cookie preferences
+                with clarity, flexibility, and a touch of sweetness.
+            </p>
 
-<script src="../dist/coucookie.min.js"></script>
+            <div class="demo-actions">
+                <button type="button" class="demo-btn demo-btn-primary" onclick="reopenCookiePopup()">
+                    Gérer mes cookies
+                </button>
+
+                <a href="#readme" class="demo-btn demo-btn-secondary">
+                    Voir le README
+                </a>
+            </div>
+        </div>
+
+        <div class="demo-preview">
+            <div class="demo-preview-card">
+                <div class="demo-cookie">
+                    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 417 417">
+                        <path d="M345 204a59 59 0 0 1-85-48 60 60 0 0 1-48-85 59 59 0 0 1-24-36q-64 4-111 41a42 42 0 0 1-6 66 42 42 0 0 1-23 6l-17-3a188 188 0 0 0-11 63 189 189 0 0 0 333 122 42 42 0 0 1-10-59q11-16 32-17h3l3-26a59 59 0 0 1-36-24M132 335q-20 0-32-16-9-10-10-27a42 42 0 0 1 74-26q10 11 10 27c0 23-18 42-42 42m28-151q-20 0-32-16-10-11-10-27a42 42 0 0 1 74-26q9 10 10 27c0 23-19 42-42 42m87 131q-26-1-42-20-12-14-13-35a54 54 0 0 1 96-34q13 15 13 35c0 30-24 54-54 54" style="fill:#f5b97d"/>
+                        <path d="M160 163a22 22 0 1 0 0-44 22 22 0 0 0 0 44m-28 151a22 22 0 1 0 0-44 22 22 0 0 0 0 44M70 106a22 22 0 0 0-8-16 189 189 0 0 0-23 36l9 2c12 0 22-10 22-22m285 190q0 11 10 18a188 188 0 0 0 20-39l-8-1c-12 0-22 9-22 22m-109-2a34 34 0 1 0 0-68 34 34 0 0 0 0 68" style="fill:#cd916e"/>
+                        <path d="M192 115q10 11 10 26a42 42 0 0 1-74 27 42 42 0 1 0 64-53m-18 177a42 42 0 0 1-74 27 42 42 0 1 0 64-53q10 11 10 26m126-32a54 54 0 0 1-95 35 54 54 0 1 0 83-69q12 14 12 34" style="fill:#cd916e"/>
+                        <path d="M160 183a42 42 0 1 0 0-84 42 42 0 0 0 0 84m0-64a22 22 0 1 1 0 44 22 22 0 0 1 0-44m-28 215a42 42 0 1 0 0-84 42 42 0 0 0 0 84m0-64a22 22 0 1 1 0 44 22 22 0 0 1 0-44"/>
+                        <path d="M417 207v-1a10 10 0 0 0-10-10c-14-1-28-10-34-23a10 10 0 0 0-15-4q-10 6-23 7a40 40 0 0 1-20-5q-20-13-20-39l-2-8-8-2h-4a40 40 0 0 1-33-63 10 10 0 0 0-4-15c-13-6-22-20-23-34a10 10 0 0 0-10-10h-3a209 209 0 1 0 209 207M62 90a22 22 0 0 1 8 16c0 12-10 22-22 22l-9-2a189 189 0 0 1 23-36m303 224q-10-7-10-18a22 22 0 0 1 30-21 188 188 0 0 1-20 39m26-58-13-2h-3a42 42 0 0 0-22 76q-14 17-32 29l-2 2q-47 35-111 36A189 189 0 0 1 26 161l5-16 17 3a42 42 0 0 0 23-6 42 42 0 0 0 6-66l-1-1q51-51 126-55a60 60 0 0 0 24 37 60 60 0 0 0 50 84 60 60 0 0 0 84 50 60 60 0 0 0 37 24 188 188 0 0 1-6 41"/>
+                        <path d="M246 314a54 54 0 1 0 0-108 54 54 0 0 0 0 108m0-88a34 34 0 1 1 0 68 34 34 0 0 1 0-68"/>
+                    </svg>
+                </div>
+
+                <h2>Consentement simple</h2>
+
+                <p>
+                    Accepter, refuser ou personnaliser les cookies en quelques secondes.
+                </p>
+
+                <div class="demo-mini-actions">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-grid">
+        <div class="demo-stat">
+            <strong>0</strong>
+            <span>dépendance lourde</span>
+        </div>
+
+        <div class="demo-stat">
+            <strong>12.03 KB</strong>
+            <span>JS minifié</span>
+        </div>
+
+        <div class="demo-stat">
+            <strong>4.11 KB</strong>
+            <span>CSS minifié</span>
+        </div>
+    </section>
+
+    <section class="demo-section" id="readme">
+        <h2>Coucookie 🍪</h2>
+
+        <p>
+            <strong>Coucookie</strong> is a lightweight, source-based cookie consent manager designed to help websites
+            handle cookie preferences with clarity, flexibility, and a touch of sweetness.
+        </p>
+
+        <p>
+            No package manager. No heavy dependency. Just grab the source code, plug it into your project,
+            and customize it to fit your needs.
+        </p>
+    </section>
+
+    <section class="demo-section">
+        <h2>📦 File size</h2>
+
+        <div class="demo-table-wrap">
+            <table class="demo-table">
+                <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Original</th>
+                    <th>Minified</th>
+                    <th>Reduction</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>coucookie.css</td>
+                    <td>5.91 KB</td>
+                    <td>4.11 KB</td>
+                    <td>30.47%</td>
+                </tr>
+                <tr>
+                    <td>coucookie.js</td>
+                    <td>14.38 KB</td>
+                    <td>12.03 KB</td>
+                    <td>16.30%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="demo-section">
+        <h2>✨ Why Coucookie?</h2>
+
+        <p>
+            Cookie consent should not feel like a legal maze or an annoying popup.
+        </p>
+
+        <ul class="demo-list">
+            <li><strong>Simple</strong> — copy the source code and integrate it directly</li>
+            <li><strong>Transparent</strong> — clear categories and user-friendly consent choices</li>
+            <li><strong>Flexible</strong> — easy to adapt to your design system</li>
+            <li><strong>Privacy-first</strong> — built around explicit user preferences</li>
+            <li><strong>Developer-friendly</strong> — readable source code, predictable behavior, minimal overhead</li>
+        </ul>
+    </section>
+
+    <section class="demo-section">
+        <h2>🍪 What is Coucookie?</h2>
+
+        <p>
+            Coucookie is a cookie manager that helps you display a cookie consent banner, let users accept,
+            reject or customize preferences, and trigger services only after the right consent has been given.
+        </p>
+
+        <ul class="demo-list">
+            <li>Display a cookie consent banner</li>
+            <li>Let users accept, reject, or customize cookie preferences</li>
+            <li>Organize cookies by service</li>
+            <li>Store and retrieve consent choices</li>
+            <li>Trigger services only after consent has been given</li>
+            <li>Let users update their preferences later</li>
+        </ul>
+    </section>
+
+    <section class="demo-section">
+        <h2>🚀 Getting Started</h2>
+
+        <p>
+            Download or copy the Coucookie source files into your project.
+        </p>
+
+        <div class="demo-code">
+            <code>
+                your-project/<br>
+                ├── index.html<br>
+                ├── coucookie/<br>
+                │&nbsp;&nbsp;&nbsp;├── coucookie.js<br>
+                │&nbsp;&nbsp;&nbsp;└── coucookie.css
+            </code>
+        </div>
+
+        <h3>Include Coucookie</h3>
+
+        <div class="demo-code">
+            <code>
+                &lt;link rel="stylesheet" href="./coucookie/coucookie.css"&gt;<br>
+                &lt;script src="./coucookie/coucookie.js"&gt;&lt;/script&gt;
+            </code>
+        </div>
+
+        <h3>Configure services</h3>
+
+        <div class="demo-code">
+            <code>
+                &lt;script&gt;<br>
+                &nbsp;&nbsp;window.activeCookieServices = [<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{ service: 'googleAnalytics', key: 'GTM-XXXXXXX' },<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{ service: 'facebookPixel', key: '123456789' }<br>
+                &nbsp;&nbsp;];<br>
+                &lt;/script&gt;
+            </code>
+        </div>
+    </section>
+
+    <section class="demo-section">
+        <h2>📦 Features</h2>
+
+        <ul class="demo-list">
+            <li>Source-code based integration</li>
+            <li>No npm required for usage</li>
+            <li>No build step required for users</li>
+            <li>Cookie consent banner generated automatically</li>
+            <li>Accept all / reject all / customize actions</li>
+            <li>Consent storage with localStorage</li>
+            <li>Consent-based script loading</li>
+            <li>Easy preference updates</li>
+            <li>Simple HTML, CSS, and JavaScript setup</li>
+        </ul>
+    </section>
+
+    <section class="demo-section">
+        <h2>🛡️ Privacy by Design</h2>
+
+        <p>
+            Coucookie helps you create a more respectful web experience by making consent explicit,
+            understandable, and easy to change.
+        </p>
+
+        <p>
+            Users stay in control. Developers stay productive.
+        </p>
+    </section>
+
+    <footer class="demo-footer">
+        Coucookie demo page — lightweight cookie consent manager.
+    </footer>
+</main>
+
+<script src="../src/coucookie.js"></script>
 
 </body>
 </html>
