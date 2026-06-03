@@ -1,4 +1,5 @@
-import { minify } from 'minify';
+import { minify as terserMinify } from 'terser';
+import CleanCSS from 'clean-css';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -42,13 +43,47 @@ async function updateReadme(results) {
 
     const regex = /<!-- MINIFY-STATS:START -->[\s\S]*?<!-- MINIFY-STATS:END -->/;
 
-    if (regex.test(readme)) {
-        readme = readme.replace(regex, table);
-    } else {
-        readme += `\n\n${table}\n`;
-    }
+    readme = regex.test(readme)
+        ? readme.replace(regex, table)
+        : `${readme.trim()}\n\n${table}\n`;
 
     await fs.writeFile(readmePath, readme, 'utf8');
+}
+
+async function minifyJs(filePath) {
+    const code = await fs.readFile(filePath, 'utf8');
+
+    const result = await terserMinify(code, {
+        compress: true,
+
+        // Important :
+        // On évite le renommage agressif pour ne pas casser les fonctions exposées sur window
+        mangle: false,
+
+        format: {
+            comments: false
+        }
+    });
+
+    if (!result.code) {
+        throw new Error('Terser n’a pas retourné de code minifié.');
+    }
+
+    return result.code;
+}
+
+async function minifyCss(filePath) {
+    const code = await fs.readFile(filePath, 'utf8');
+
+    const result = new CleanCSS({
+        level: 2
+    }).minify(code);
+
+    if (result.errors.length) {
+        throw new Error(result.errors.join('\n'));
+    }
+
+    return result.styles;
 }
 
 async function build() {
@@ -60,7 +95,7 @@ async function build() {
     for (const file of files) {
         const extension = path.extname(file);
 
-        if (extension !== '.js' && extension !== '.css') {
+        if (!['.js', '.css'].includes(extension)) {
             continue;
         }
 
@@ -71,9 +106,11 @@ async function build() {
         );
 
         try {
-            const minifyData = await minify(filePath);
+            const minifiedData = extension === '.js'
+                ? await minifyJs(filePath)
+                : await minifyCss(filePath);
 
-            await fs.writeFile(distPath, minifyData, 'utf8');
+            await fs.writeFile(distPath, minifiedData, 'utf8');
 
             const originalStats = await fs.stat(filePath);
             const minifiedStats = await fs.stat(distPath);
