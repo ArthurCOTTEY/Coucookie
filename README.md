@@ -1,4 +1,4 @@
-![Coucookie banner](img.png)
+[![5bf2da1c-ffd4-466c-ac69-0a95773034d6.png](https://i.postimg.cc/YSMb570N/5bf2da1c-ffd4-466c-ac69-0a95773034d6.png)](https://postimg.cc/9Dgd9vGz)
 
 # Coucookie 🍪
 
