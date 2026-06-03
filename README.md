@@ -1,3 +1,5 @@
+![Coucookie banner](img.png)
+
 # Coucookie 🍪
 
 **Coucookie** is a lightweight, source-based cookie consent manager designed to help websites handle cookie preferences with clarity, flexibility, and a touch of sweetness.
@@ -7,12 +9,14 @@ No package manager. No heavy dependency. Just grab the source code, plug it into
 ## 📦 File size
 
 <!-- MINIFY-STATS:START -->
+
 ## Build size
 
-| File | Original | Minified | Reduction |
-|---|---:|---:|---:|
-| coucookie.css | 5.91 KB | 4.11 KB | 30.47% |
-| coucookie.js | 14.38 KB | 12.03 KB | 16.30% |
+| File          | Original | Minified | Reduction |
+| ------------- | -------: | -------: | --------: |
+| coucookie.css |  5.91 KB |  4.11 KB |    30.47% |
+| coucookie.js  | 14.38 KB | 12.03 KB |    16.30% |
+
 <!-- MINIFY-STATS:END -->
 
 ## ✨ Why Coucookie?
