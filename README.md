@@ -44,19 +44,24 @@ Download or copy the Coucookie source files into your project.
 
 For example:
 
+```txt
 your-project/
 ├── index.html
 ├── coucookie/
 │   ├── coucookie.js
 │   └── coucookie.css
+```
 
 Then include Coucookie in your HTML:
 
+```html
 <link rel="stylesheet" href="./coucookie/coucookie.css" />
 <script src="./coucookie/coucookie.js"></script>
+```
 
 Initialize Coucookie with your consent configuration:
 
+```html
 <script>
   const coucookie = new Coucookie({
     categories: {
@@ -78,11 +83,13 @@ Initialize Coucookie with your consent configuration:
 
   coucookie.init();
 </script>
+```
 
 ## 🧁 Example
 
 Load a script only when the user has accepted a specific cookie category:
 
+```html
 <script>
   coucookie.onConsent("analytics", () => {
     console.log("Analytics consent granted");
@@ -91,6 +98,7 @@ Load a script only when the user has accepted a specific cookie category:
     // loadAnalyticsScript();
   });
 </script>
+```
 
 ## 📦 Features
 
