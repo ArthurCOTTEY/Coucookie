@@ -4,6 +4,17 @@
 
 No package manager. No heavy dependency. Just grab the source code, plug it into your project, and customize it to fit your needs.
 
+## 📦 File size
+
+<!-- MINIFY-STATS:START -->
+## Build size
+
+| File | Original | Minified | Reduction |
+|---|---:|---:|---:|
+| coucookie.css | 5.74 KB | 3.92 KB | 31.63% |
+| coucookie.js | 10.46 KB | 6.83 KB | 34.65% |
+<!-- MINIFY-STATS:END -->
+
 ## ✨ Why Coucookie?
 
 Cookie consent should not feel like a legal maze or an annoying popup.
