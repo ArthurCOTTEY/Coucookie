@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo Coucookie</title>
+
+    <link rel="stylesheet" href="../dist/coucookie.min.css">
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            window.dataLayer.push(arguments);
+        }
+
+        gtag('consent', 'default', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+            functionality_storage: 'granted',
+            security_storage: 'granted',
+            wait_for_update: 500
+        });
+
+        window.activeCookieServices = [
+            {
+                service: 'googleAnalytics',
+                key: 'GTM-XXXXXXX'
+            },
+            {
+                service: 'facebookPixel',
+                key: '123456789'
+            }
+        ];
+    </script>
+</head>
+<body>
+
+<h1>Demo Coucookie</h1>
+
+<p>
+    Cette page sert à tester le bandeau de cookies.
+</p>
+
+<button type="button" onclick="reopenCookiePopup()">
+    Gérer mes cookies
+</button>
+
+<script src="../dist/coucookie.min.js"></script>
+
+</body>
+</html>
